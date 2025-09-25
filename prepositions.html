@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hebrew Shorashim Flashcards</title>
+    <title>Hebrew Prepositions Flashcards</title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -63,8 +63,7 @@
     <script>
       let flashcards = [],
         currentIndex = 0,
-        showingHebrew = false; // show translation first
-
+        showingHebrew = true;
       const flashcard = document.getElementById("flashcard");
       const prevBtn = document.getElementById("prev");
       const nextBtn = document.getElementById("next");
@@ -81,11 +80,11 @@
 
       async function loadFlashcards() {
         try {
-          const response = await fetch("./verbs.json");
+          const response = await fetch("./prepositions.json");
           flashcards = await response.json();
           flashcards = shuffle(flashcards);
           currentIndex = 0;
-          showingHebrew = false; // show translation first
+          showingHebrew = true;
           showCard();
         } catch (e) {
           flashcard.textContent = "Error loading flashcards";
@@ -95,44 +94,39 @@
 
       function showCard() {
         if (!flashcards.length) return;
-        const [verb, translation] = flashcards[currentIndex];
-        flashcard.textContent = showingHebrew ? verb : translation;
+        const [preposition, translation] = flashcards[currentIndex];
+        flashcard.textContent = showingHebrew ? preposition : translation;
         counter.textContent = `${currentIndex + 1} / ${flashcards.length}`;
       }
 
-      // Flip card on click
       flashcard.addEventListener("click", () => {
         showingHebrew = !showingHebrew;
         showCard();
       });
 
-      // Previous button
       prevBtn.addEventListener("click", () => {
         if (!flashcards.length) return;
         currentIndex =
           (currentIndex - 1 + flashcards.length) % flashcards.length;
-        showingHebrew = false; // show translation first
+        showingHebrew = true;
         showCard();
       });
 
-      // Next button
       nextBtn.addEventListener("click", () => {
         if (!flashcards.length) return;
         currentIndex = (currentIndex + 1) % flashcards.length;
-        showingHebrew = false; // show translation first
+        showingHebrew = true;
         showCard();
       });
 
-      // Shuffle button
       refreshBtn.addEventListener("click", () => {
         if (!flashcards.length) return;
         flashcards = shuffle(flashcards);
         currentIndex = 0;
-        showingHebrew = false; // show translation first
+        showingHebrew = true;
         showCard();
       });
 
-      // Load flashcards on page load
       loadFlashcards();
     </script>
   </body>
