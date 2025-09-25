@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hebrew Shorashim Flashcards</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background-color: #f4f4f9;
+        margin: 0;
+      }
+      .card-container {
+        width: 300px;
+        height: 200px;
+        margin-bottom: 20px;
+        background: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+        user-select: none;
+        font-size: 22px;
+      }
+      .buttons {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+        border: 1px solid #888;
+        background: #eee;
+      }
+      #counter {
+        margin-bottom: 20px;
+        font-size: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="counter">0 / 0</div>
+    <div id="flashcard" class="card-container">Loading...</div>
+
+    <div class="buttons">
+      <button id="prev">Previous</button>
+      <button id="next">Next</button>
+      <button id="refresh">Shuffle</button>
+    </div>
+
+    <script>
+      let flashcards = [],
+        currentIndex = 0,
+        showingHebrew = false; // show translation first
+
+      const flashcard = document.getElementById("flashcard");
+      const prevBtn = document.getElementById("prev");
+      const nextBtn = document.getElementById("next");
+      const refreshBtn = document.getElementById("refresh");
+      const counter = document.getElementById("counter");
+
+      function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+      }
+
+      async function loadFlashcards() {
+        try {
+          const response = await fetch("./verbs.json");
+          flashcards = await response.json();
+          flashcards = shuffle(flashcards);
+          currentIndex = 0;
+          showingHebrew = true;
+          showCard();
+        } catch (e) {
+          flashcard.textContent = "Error loading flashcards";
+          console.error(e);
+        }
+      }
+
+      function showCard() {
+        if (!flashcards.length) return;
+        const [verb, translation] = flashcards[currentIndex];
+        flashcard.textContent = showingHebrew ? verb : translation;
+        counter.textContent = `${currentIndex + 1} / ${flashcards.length}`;
+      }
+
+      flashcard.addEventListener("click", () => {
+        showingHebrew = !showingHebrew;
+        showCard();
+      });
+
+      prevBtn.addEventListener("click", () => {
+        if (!flashcards.length) return;
+        currentIndex =
+          (currentIndex - 1 + flashcards.length) % flashcards.length;
+        showingHebrew = true;
+        showCard();
+      });
+
+      nextBtn.addEventListener("click", () => {
+        if (!flashcards.length) return;
+        currentIndex = (currentIndex + 1) % flashcards.length;
+        showingHebrew = true;
+        showCard();
+      });
+
+      refreshBtn.addEventListener("click", () => {
+        if (!flashcards.length) return;
+        flashcards = shuffle(flashcards);
+        currentIndex = 0;
+        showingHebrew = true;
+        showCard();
+      });
+
+      loadFlashcards();
+    </script>
+  </body>
+</html>

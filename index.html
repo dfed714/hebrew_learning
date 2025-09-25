@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hebrew Flashcards Home</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        background-color: #f4f4f9;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+      button {
+        padding: 20px 30px;
+        font-size: 18px;
+        cursor: pointer;
+        border-radius: 10px;
+        border: 1px solid #888;
+        background: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+      button:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid">
+      <button onclick="location.href='roots.html'">Shorashim</button>
+      <button onclick="location.href='nouns.html'">Nouns</button>
+      <button onclick="location.href='verbs.html'">Verbs</button>
+    </div>
+  </body>
+</html>
